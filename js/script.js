@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
         menu.classList.remove('animate__rollIn');
         menu.classList.add("animate__rollOut");
     });
-    //animation
     
     // color
     const red = document.querySelector(".menu__red"),
@@ -49,33 +48,123 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // validate
 
-//    const form = document.querySelectorAll(".contacts__form"),
-//           name = document.querySelectorAll(".contacts__name"),
-//           email = document.querySelectorAll(".contacts__email"),
-//           inputs = document.querySelectorAll("input");
-   
-    
-//         const pristine = new Pristine(form);
-//         form.addEventListener('submit', function (e) {
-//             e.preventDefault();
-//             const valid = pristine.validate();
-            
-//             if (valid == false) {
-//                 form.style.backgroundColor = "lightgrey";
-//                 inputs.forEach(input => {
-                    
-//                     input.style.cssText =`border: 2px solid red;`;
-//                 });
-//             } else if (valid == true) {
-//                 inputs.forEach(input => {
-//                     input.style.cssText =`border: 2px solid green;`;
-//                     input.style.backgroundColor = "#fff";
-//                 });
-//                 form.style.backgroundColor = "";
-//                 e.target.reset();
-//             }       
-           
-//         });
+    const form = document.querySelector(".contacts__form"),
+          name = document.querySelector(".contacts__name input"),
+          email = document.querySelector(".contacts__email input"),
+          policy = document.querySelector(".contacts__policy"),
+          policyInput = policy.querySelector("input"),
+          divName = document.createElement("div"),
+          divEmail = document.createElement("div"),
+          divPolicy = document.createElement("div"),
+          status = document.querySelector("#my-form-status");
+    let nameValide = false,
+        emailValide = false,
+        policyValide = false;
+    function inputStyle(input) {
+        input.style.cssText = `
+            font-size: 13px;
+            color: #000;
+            margin-top: 5px;
+            font-weight: bold;
+        `;
+    }
+    const postData = async (url, data) => {
+        let res = await fetch(url, {
+            method: form.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!res.ok) {
+            status.innerHTML = "Oops! There was a problem submitting your form";
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
+        return await res.json();     
+
+    };
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = new FormData(e.target);
+
+        if (name.value){
+            if(name.value.length >= 5 && (/\d/i).test(name.value) == false && (/\s/i).test(name.value) == true && (name.value).search(/\s/i) != name.value.length-1) {
+                divName.textContent = "";
+                name.style.border = "none";
+                nameValide = true;
+            } else {
+                name.style.border = "3px solid red";
+                divName.textContent = "Поле неправильно заполнено.";
+                inputStyle(divName);
+                name.after(divName);
+                nameValide = false;
+            }
+        } else {
+            nameValide = false;
+            name.style.border = "3px solid red";
+            divName.textContent = "Введите ваше имя.";
+            name.after(divName);
+            inputStyle(divName);
+        }
+
+        if (email.value) {
+            if ((/@/i).test(email.value) && ((/.ua/i).test(email.value) || (/.com/i).test(email.value) || (/.ill/i).test(email.value) || (/.net/i).test(email.value) || (/.gov/i).test(email.value) || (/.co/i).test(email.value) || (/.org/i).test(email.value) || (/.us/i).test(email.value) || (/.con/i).test(email.value))) {
+                divEmail.textContent = "";
+                email.style.border = "none";
+                emailValide = true;
+            } else {
+                email.style.border = "3px solid red";
+                divEmail.textContent = "Поле неправильно заполнено.";
+                inputStyle(divEmail);
+                email.after(divEmail);
+                emailValide = false;
+            }
+        } else {
+            emailValide = false;
+            email.style.border = "3px solid red";
+            divEmail.textContent = "Введите ваш email.";
+            email.after(divEmail);
+            inputStyle(divEmail);
+        }
+
+        if (policyInput.checked) {
+            divPolicy.style.display = "none";
+            policyValide = true;
+            policy.style.border = "none";
+        } else {
+            policyValide = false;
+            policy.style.border = "3px solid red";
+            divPolicy.textContent = "Введите V";
+            policyInput.before(divPolicy);
+            divPolicy.style.cssText = `
+                font-size: 13px;
+                color: #000;
+                margin-top: -20px;
+                font-weight: bold;    
+            `;
+        }
+        if (nameValide && emailValide && policyValide) {
+            postData(form.action, data)
+            .then(response => {
+                status.innerHTML = "Спасибо за сообщение!";
+            }).catch(error => {
+                status.innerHTML = "Ой! При отправке формы возникла проблема";
+            }).finally(()=>{
+                e.target.reset();
+            });
+        } 
+    });
+        
+
+
+
+
+
+
+
+
+    //animation
 
     new WOW().init();
 
