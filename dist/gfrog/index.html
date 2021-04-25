@@ -1,0 +1,70 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="glass">
+        <h1>Niagara-Falls. Macrame ART.</h1>
+         
+        <main class="main">
+            <div class="header">
+                <div class="header__board">
+                    <div class="board__speed speed">
+                        <div class="speed__value">
+                            <span class="speed__value_num">1</span>
+                        </div>
+                    </div>                
+                    <div class="board__score score">
+                        <span class="score__value">0</span>
+                    </div> 
+                    <div class="board__lives">
+                        <div class="lives-wrapp">
+                            <div class="lives-wrapp__heart"></div>
+                            <div class="lives-wrapp__heart"></div>
+                            <div class="lives-wrapp__heart"></svg>
+                            </div>
+                        </div>
+                    </div> 
+                </div> 
+                <div class="header__buttons">
+                   <button id="gameButt" class="header__button button button_start">START</button> 
+                    <button class="header__button button button_guide">🙇🏻‍♂️🔊 </button>
+                        <div class="modal rules">
+                            <h2 class="modal__title">Добро пожаловать!</h2>
+                            <p class="modal__name rule">1.  🐸 Лягушка проголодалась. Она ловит комариков🦟🦟🦟. 
+                            </p>
+                            <p class="modal__name rule">2.   Каждый комарик 🦟- +10 очков.</p>
+                            <p class="modal__name rule">3.   Упали в воду - то у игрока отнимается жизнь. Всего 3 жизни. Если жизни закончились, то игра останавливается.</p>
+                            <p class="modal__name rule">4.   🍁Желаем удачи!🍁</p>
+                            <button class="modal__submit modal__submit_ok-butt">OK</button>
+                        </div>
+                </div>
+            </div>
+            <div class="game-zone">
+                <audio controls>
+                    <source src="audio/musikbreak.wav" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>   
+                <canvas id="mycanvas" width="600" height="360" ></canvas>
+                
+            </div> 
+            <div class="modal end-game">
+                <h2 class="modal__title">ИГРА ЗАВЕРШЕНА</h2>
+                <p class="end-game__score">Поздравляем! Вы набрали:</p>
+                <p class="end-game__value">512</p>
+                <p class="end-game__value-subtitle">очков!</p>
+                <button class="modal__submit">OK</button>
+            </div>       
+        </main>
+    </div>
+    <script src="script1.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
