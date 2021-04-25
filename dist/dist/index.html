@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="ie=edge"><!-- favicon --><link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png"><link rel="manifest" href="icons/site.webmanifest"><link rel="stylesheet" href="css/style.min.css"><title>Macrame ART Koifman</title></head><body translate="no"><section class="glass"><div class="container"><h1 class="glass__title">Niagara-Falls. Macrame ART.</h1><main class="glass__main"><div class="glass__header"><div class="glass__board"><div class="glass__speed speed"><div class="speed__value"><span class="speed__value_num">1</span></div></div><div class="glass__score score"><span class="score__value">0</span></div><div class="board__lives"><div class="lives-wrapp"><div class="lives-wrapp__heart"></div><div class="lives-wrapp__heart"></div><div class="lives-wrapp__heart"></div></div></div></div><div class="glass__buttons"><button class="glass__button glass__button-start">Начать</button> <button class="glass__button glass__button-guide">🙇🏻‍♂️📣</button><div class="modal modal-help"><h2 class="modal-title">Правила игры</h2><p class="modal-text rule">1. В водопаде в случайном порядке периодически появляется кленовый листик 🍁<br>2. Нужно поймать листик. При клике по листику игроку добавляется +10 очков.<br>3. После каждой пятого пойманного листика скорость его случайного появления увеличивается.<br>4. Если клик был выполнен по другому emoji, то у игрока отнимается жизнь. Всего 3 жизни. Если жизни закончились, то игра останавливается.</p><button class="modal__submit modal__submit_ok-butt">OK</button></div></div></div><div class="glass__game"><div class="glass__wrapper" id="endgame"><div class="niagara"><div class="river"><canvas class="waterfall1"></canvas><canvas class="waterfall2"></canvas><div class="knots"><div id="knot1"><img src="img/knotw.png" alt="knot" class="knot"></div><div class="game-zone" id="#mapleLeaf1"><span class="game-zone_animal knot red"></span></div><div id="knot2"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot3"><img src="img/knotw.png" alt="knot" class="knot"></div><div class="game-zone" id="#mapleLeaf2"><span class="game-zone_animal knot red"></span></div><div id="knot4"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot5"><img src="img/knotw.png" alt="knot" class="knot"></div><div class="game-zone" id="#mapleLeaf3"><span class="game-zone_animal knot red"></span></div><div id="knot6"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot7"><img src="img/knotw.png" alt="knot" class="knot"></div><div class="game-zone" id="#mapleLeaf4"><span class="game-zone_animal knot red"></span></div><div id="knot8"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot9"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot10"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot11"><img src="img/knotw.png" alt="knot" class="knot"></div><div class="game-zone" id="#mapleLeaf5"><span class="game-zone_animal knot red"></span></div><div id="knot12"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot13"><img src="img/knotw.png" alt="knot" class="knot"></div><div class="game-zone" id="#mapleLeaf6"><span class="game-zone_animal knot red"></span></div><div id="knot14"><img src="img/knotw.png" alt="knot" class="knot"></div><div id="knot15"><img src="img/knotw.png" alt="knot" class="knot"></div><div class="game-zone" id="#mapleLeaf7"><span class="game-zone_animal knot red"></span></div><div id="knot16"><img src="img/knotw.png" alt="knot" class="knot"></div></div></div></div></div></div><div class="modal modal-end"><h2 class="modal-title">ИГРА ЗАВЕРШЕНА</h2><p class="modal-text">Вы потеряли 3 сердечка - ❤️❤️❤️! УВЫ ...<br>Можете пополнить запас сердечек</p><p class="modal-subtitle">Купить ❤️</p><button id="thanks" class="modal__submit modal-thanks">OK</button></div><div class="modal modal-prize"><h2 class="modal-title">ИГРА ЗАВЕРШЕНА</h2><p class="modal-text">Поздравляем! Вы набрали:<br>500 очков!<br></p><p class="modal-subtitle">꧁✿🌸╭⊱ Вы прошли этап! Браво! ⊱╮🌸✿꧂</p><button id="thanks" class="modal__submit modal-thanks">OK</button></div></main></div></section><script>var waterfallCanvas = function (c, cw, ch) {
+
+            var _this = this;
+            this.c = c;
+            this.ctx = c.getContext('2d');
+            this.cw = cw;
+            this.ch = ch;
+
+            this.particles = [];
+            this.particleRate = 6;
+            this.gravity = 0.15;
+
+
+            this.init = function () {
+                this.loop();
+            };
+
+            this.reset = function () {
+                this.ctx.clearRect(0, 0, this.cw, this.ch);
+                this.particles = [];
+            };
+
+            this.rand = function (rMi, rMa) {
+                return ~~(Math.random() * (rMa - rMi + 1) + rMi);
+            };
+
+
+            this.Particle = function () {
+                var newWidth = _this.rand(1, 20);
+                var newHeight = _this.rand(1, 45);
+                this.x = _this.rand(10 + newWidth / 2, _this.cw - 10 - newWidth / 2);
+                this.y = -newHeight;
+                this.vx = 0;
+                this.vy = 0;
+                this.width = newWidth;
+                this.height = newHeight;
+                this.hue = _this.rand(200, 220);
+                this.saturation = _this.rand(30, 60);
+                this.lightness = _this.rand(30, 60);
+            };
+
+            this.Particle.prototype.update = function (i) {
+                this.vx += this.vx;
+                this.vy += _this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+            };
+
+            this.Particle.prototype.render = function () {
+                _this.ctx.strokeStyle = 'hsla(' + this.hue + ', ' + this.saturation + '%, ' + this.lightness + '%, .05)';
+                _this.ctx.beginPath();
+                _this.ctx.moveTo(this.x, this.y);
+                _this.ctx.lineTo(this.x, this.y + this.height);
+                _this.ctx.lineWidth = this.width / 2;
+                _this.ctx.lineCap = 'round';
+                _this.ctx.stroke();
+            };
+
+            this.Particle.prototype.renderBubble = function () {
+                _this.ctx.fillStyle = 'hsla(' + this.hue + ', 40%, 40%, 1)';
+                _this.ctx.fillStyle = 'hsla(' + this.hue + ', ' + this.saturation + '%, ' + this.lightness + '%, .3)';
+                _this.ctx.beginPath();
+                _this.ctx.arc(this.x + this.width / 2, _this.ch - 20 - _this.rand(0, 10), _this.rand(1, 8), 0, Math.PI * 2, false);
+                _this.ctx.fill();
+            };
+
+            this.createParticles = function () {
+                var i = this.particleRate;
+                while (i--) {
+                    this.particles.push(new this.Particle());
+                }
+            };
+
+            this.removeParticles = function () {
+                var i = this.particleRate;
+                while (i--) {
+                    var p = this.particles[i];
+                    if (p.y > _this.ch - 20 - p.height) {
+                        p.renderBubble();
+                        _this.particles.splice(i, 1);
+                    }
+                }
+            };
+
+            this.updateParticles = function () {
+                var i = this.particles.length;
+                while (i--) {
+                    var p = this.particles[i];
+                    p.update(i);
+                };
+            };
+
+            this.renderParticles = function () {
+                var i = this.particles.length;
+                while (i--) {
+                    var p = this.particles[i];
+                    p.render();
+                };
+            };
+
+            this.clearCanvas = function () {
+                this.ctx.globalCompositeOperation = 'destination-out';
+                this.ctx.fillStyle = 'rgba(255,255,255,.06)';
+                this.ctx.fillRect(0, 0, this.cw, this.ch);
+                this.ctx.globalCompositeOperation = 'lighter';
+            };
+
+            this.loop = function () {
+                var loopIt = function () {
+                    requestAnimationFrame(loopIt, _this.c);
+                    _this.clearCanvas();
+                    _this.createParticles();
+                    _this.updateParticles();
+                    _this.renderParticles();
+                    _this.removeParticles();
+                };
+                loopIt();
+            };
+
+        };
+
+        var isCanvasSupported = function () {
+            var elem = document.createElement('canvas');
+            return !!(elem.getContext && elem.getContext('2d'));
+        };
+
+        var setupRAF = function () {
+            var lastTime = 0;
+            var vendors = ['ms', 'moz', 'webkit', 'o'];
+            for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+                window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+            };
+
+            if (!window.requestAnimationFrame) {
+                window.requestAnimationFrame = function (callback, element) {
+                    var currTime = new Date().getTime();
+                    var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                    var id = window.setTimeout(function () {
+                        callback(currTime + timeToCall);
+                    }, timeToCall);
+                    lastTime = currTime + timeToCall;
+                    return id;
+                };
+            };
+
+            if (!window.cancelAnimationFrame) {
+                window.cancelAnimationFrame = function (id) {
+                    clearTimeout(id);
+                };
+            };
+        };
+
+        if (isCanvasSupported()) {
+            var c = document.querySelector('.waterfall1');
+            var cw = c.width = 250;
+            var ch = c.height = 250;
+            var waterfall = new waterfallCanvas(c, cw, ch);
+            setupRAF();
+            waterfall.init();
+        }
+    
+
+        if (isCanvasSupported()) {
+            var c = document.querySelector('.waterfall2');
+            var cw = c.width = 200;
+            var ch = c.height = 260;
+         
+            var waterfall = new waterfallCanvas(c, cw, ch);
+            setupRAF();
+            waterfall.init();
+        }</script><script src="js/script.js"></script></body></html>
