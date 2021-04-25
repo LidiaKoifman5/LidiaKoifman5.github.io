@@ -55,29 +55,6 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // game-zone
-    const boat = document.querySelector('.glass__boat');
-    boat.onclick = function() {
-  
-        this.onclick = null; // only the first click should start the animation
-  
-        let times = 1;
-  
-        function go() {
-          if (times % 2) {
-            boat.classList.remove('glass__back');
-            boat.style.marginLeft = 5 * times + 100 + 'px';
-          } else {
-            boat.classList.add('glass__back');
-            boat.style.marginLeft = 5 * times - 100 + 'px';
-          }
-        }
-        go();
-        boat.addEventListener('transitionend', function() {
-          times++;
-          go();
-        });
-    };
-    console.log(boat);    
+   
 });
           
